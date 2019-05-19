@@ -7,7 +7,7 @@ object RetrofitClient {
 
     var retrofit: Retrofit? = null
 
-    fun getClient(baseUrl:String?): Retrofit {
+    fun getClient(baseUrl:String): Retrofit {
         if(retrofit==null){
 
             retrofit= Retrofit.Builder()

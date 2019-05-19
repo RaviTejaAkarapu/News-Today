@@ -1,8 +1,8 @@
-package com.newstoday.Common
+package com.newstoday.common
 
-import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Date
 
 object Iso8601Parser {
 
@@ -19,7 +19,7 @@ object Iso8601Parser {
 
             input = s0.toString() + "GMT" + s1
         }
-        return df.parse(input) as Date
+        return df.parse(input)
     }
 
     fun toString(date: Date): String {
