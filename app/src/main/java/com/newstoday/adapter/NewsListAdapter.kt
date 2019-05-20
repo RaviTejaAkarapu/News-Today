@@ -6,18 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.newstoday.Model.Article
 import com.newstoday.R
 
-class ListNewsAdapter(
+class NewsListAdapter(
     val articleList: MutableList<Article>,
-    private val listener: OnListNewsAdapterInteractionListener?
-) : RecyclerView.Adapter<ListNewsViewHolder>(), ListNewsViewHolder.ListNewsListener {
+    private val listener: OnNewsListAdapterInteractionListener?
+) : RecyclerView.Adapter<NewsListViewHolder>(), NewsListViewHolder.ListNewsListener {
     override fun setCurrentArticle(article: Article) {
         listener?.setCurrentArticle(article)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListNewsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemView = inflater.inflate(R.layout.news_layout, parent, false)
-        return ListNewsViewHolder(itemView, this)
+        return NewsListViewHolder(itemView, this)
     }
 
     override fun getItemCount(): Int {
@@ -25,12 +25,18 @@ class ListNewsAdapter(
         return itemCount
     }
 
-    override fun onBindViewHolder(holder: ListNewsViewHolder, position: Int) {
-        holder.setArticle(articleList[position])
+    override fun onBindViewHolder(newsListViewHolder: NewsListViewHolder, position: Int) {
+        newsListViewHolder.setArticle(articleList[position])
     }
 
-    interface OnListNewsAdapterInteractionListener {
+    override fun openNewsUrl(article: Article) {
+        listener?.openNewsUrl(article)
+    }
+
+    interface OnNewsListAdapterInteractionListener {
         fun setCurrentArticle(article: Article)
+
+        fun openNewsUrl(article: Article)
     }
 
 

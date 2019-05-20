@@ -1,9 +1,6 @@
 package com.newstoday.Interface
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.newstoday.Model.Article
 
 @Dao
@@ -15,8 +12,14 @@ interface ArticleDao {
     @Update
     fun updateArticle(article: Article)
 
-    @Query("SELECT * from Article ORDER BY publishedAt")
+    @Query("SELECT COUNT(*) FROM Article")
+    fun getOfflineArticleCount():Int
+
+    @Query("SELECT * from Article ORDER BY article_published_at")
     fun getArticleList():List<Article>
+
+    @Delete
+    fun deleteArticle(article: Article)
 
 //    @Query("SELECT * from Article WHERE id=:id")
 //    fun getArticle():Article

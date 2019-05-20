@@ -14,14 +14,27 @@ class ArticleRepository (
         InsertAsyncTask(articleDatabase.articleDao()).execute(article)
     }
 
+    fun unSaveArticle(article: Article){
+        DeleteAsyncTask(articleDatabase.articleDao())
+    }
+
+    fun getSavedArticles():List<Article>{
+        val list =articleDatabase.articleDao().getArticleList()
+        return list
+    }
+
     companion object{
         class InsertAsyncTask(private val articleDao: ArticleDao): AsyncTask<Article,Any?,Any?>(){
             override fun doInBackground(vararg params: Article?) {
                 val article = params[0]
                 articleDao.insertArticle(article!!)
             }
-
+        }
+        class DeleteAsyncTask(private val articleDao: ArticleDao): AsyncTask<Article,Any?,Any?>(){
+            override fun doInBackground(vararg params: Article?) {
+                val article = params[0]
+                articleDao.deleteArticle(article!!)
+            }
         }
     }
-
 }

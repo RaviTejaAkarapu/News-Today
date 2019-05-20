@@ -7,23 +7,25 @@ import androidx.room.PrimaryKey
 @Entity
 class Article(
     @PrimaryKey(autoGenerate = true)
-    var id: Int? =null,
+    var id: Int? = null,
 
-    @ColumnInfo
+    @ColumnInfo(name = "article_author")
     var author: String? = null,
 
-    @ColumnInfo
+    @ColumnInfo(name = "article_title")
     var title: String? = null,
 
-    @ColumnInfo
+    @ColumnInfo(name = "article_description")
     var description: String? = null,
 
-    @ColumnInfo
+    @ColumnInfo(name = "article_url")
     var url: String? = null,
 
-    @ColumnInfo
+    @ColumnInfo(name = "article_image_url")
     var urlToImage: String? = null,
 
-    @ColumnInfo
-    var publishedAt: String? = null
+    @ColumnInfo(name = "article_published_at")
+    var publishedAt: String? = null,
+
+    var isBookmarked: Boolean? = false
 )

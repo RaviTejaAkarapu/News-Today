@@ -1,6 +1,5 @@
 package com.newstoday.Interface
 
-import com.newstoday.Model.Category
 import com.newstoday.Model.News
 import retrofit2.Call
 import retrofit2.http.*

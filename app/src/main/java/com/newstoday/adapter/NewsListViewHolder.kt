@@ -1,15 +1,17 @@
 package com.newstoday.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
-import com.newstoday.common.Iso8601Parser
+import androidx.recyclerview.widget.RecyclerView
 import com.newstoday.Model.Article
+import com.newstoday.R
+import com.newstoday.common.Iso8601Parser
+import com.newstoday.viewmodel.ArticleViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.news_layout.view.*
 import java.text.ParseException
 import java.util.*
 
-class ListNewsViewHolder(itemView: View,val listener: ListNewsListener?) : RecyclerView.ViewHolder(itemView) {
+class NewsListViewHolder(itemView: View, val listener: ListNewsListener?) : RecyclerView.ViewHolder(itemView) {
 
     var article_title = itemView.article_title
     val article_image = itemView.article_image
@@ -36,8 +38,11 @@ class ListNewsViewHolder(itemView: View,val listener: ListNewsListener?) : Recyc
             listener?.setCurrentArticle(article)
         }
     }
-    interface ListNewsListener{
+
+    interface ListNewsListener {
         fun setCurrentArticle(article: Article)
+
+        fun openNewsUrl(article: Article)
     }
 
 }

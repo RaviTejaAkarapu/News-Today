@@ -12,7 +12,7 @@
         app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/card_news"
+            android:id="@+id/offline_card_news"
             android:layout_width="100dp"
             android:layout_height="150dp"
             android:layout_gravity="center_vertical">
@@ -22,7 +22,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_height="150dp"
-                android:id="@+id/article_image"
+                android:id="@+id/offline_article_image"
                 tools:src="@tools:sample/backgrounds/scenic"
                 android:scaleType="centerCrop"/>
 
@@ -40,11 +40,7 @@
                 android:maxLines="2"
                 android:textColor="#fff"
                 tools:text="@tools:sample/backgrounds/scenic"
-                android:id="@+id/article_title"
+                android:id="@+id/offline_article_title"
                 android:paddingStart="4dp"/>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.cardview.widget.CardView>

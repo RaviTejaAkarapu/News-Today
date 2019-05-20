@@ -1,14 +1,12 @@
 package com.newstoday
 
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.newstoday.fragment.PlaceholderFragment
+import com.newstoday.fragment.NewsListFragment
 import kotlinx.android.synthetic.main.activity_channel.*
 
 class ChannelActivity : AppCompatActivity() {
@@ -39,8 +37,11 @@ class ChannelActivity : AppCompatActivity() {
 
         val id = item.itemId
 
-        if (id == R.id.action_settings) {
-            return true
+        when(id){
+            R.id.action_bookmarks->{
+                val intent = Intent(this,OfflineActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -55,7 +56,7 @@ class ChannelActivity : AppCompatActivity() {
 
         override fun getItem(position: Int): androidx.fragment.app.Fragment {
 
-            return PlaceholderFragment.newInstance(getPageTitle(position).toString())
+            return NewsListFragment.newInstance(getPageTitle(position).toString())
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
