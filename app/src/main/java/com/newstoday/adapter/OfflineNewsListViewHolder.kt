@@ -1,6 +1,7 @@
 package com.newstoday.adapter
 
 import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.newstoday.Model.Article
 import com.newstoday.common.Iso8601Parser
@@ -17,8 +18,7 @@ class OfflineNewsListViewHolder(itemView: View, val listener:OfflineListNewsList
     val offlineArticleImage = itemView.offline_article_image
 
 
-    fun setOfflineArticle(articleList: List<Article>) {
-        articleList.forEach { article ->
+    fun setOfflineArticle(article: Article) {
             Picasso.get()
                 .load(article.urlToImage)
                 .into(offlineArticleImage)
@@ -40,8 +40,9 @@ class OfflineNewsListViewHolder(itemView: View, val listener:OfflineListNewsList
             itemView.setOnClickListener {
                 listener?.openNewsUrl(article)
             }
-        }
 
+        val layoutParams=itemView.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.topMargin=8
     }
     interface OfflineListNewsListener {
         fun openNewsUrl(article: Article)

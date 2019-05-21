@@ -24,6 +24,7 @@
                 android:layout_height="150dp"
                 android:id="@+id/article_image"
                 tools:src="@tools:sample/backgrounds/scenic"
+                android:foreground="@drawable/ripple_white"
                 android:scaleType="centerCrop"/>
 
         <View android:layout_width="match_parent"

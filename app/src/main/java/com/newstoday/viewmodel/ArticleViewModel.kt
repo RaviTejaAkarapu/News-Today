@@ -1,5 +1,6 @@
 package com.newstoday.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.newstoday.ApplicationController
@@ -17,8 +18,11 @@ class ArticleViewModel : ViewModel() {
         articleRepository.unSaveArticle(article)
     }
 
-    fun getSavedArticles(): List<Article> {
-        val list = articleRepository.getSavedArticles()
-        return list
+    fun compareBookmarks(article: Article): Boolean{
+        return articleRepository.compareBookmarks(article)
+    }
+
+    fun getSavedArticles(): LiveData<List<Article>> {
+   return articleRepository.getSavedArticles()
     }
 }

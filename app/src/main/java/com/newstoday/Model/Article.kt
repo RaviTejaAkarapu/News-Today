@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 class Article(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name="article_id")
     var id: Int? = null,
 
     @ColumnInfo(name = "article_author")
@@ -27,5 +28,6 @@ class Article(
     @ColumnInfo(name = "article_published_at")
     var publishedAt: String? = null,
 
+    @ColumnInfo(name = "isBookmarked")
     var isBookmarked: Boolean? = false
 )

@@ -1,5 +1,6 @@
 package com.newstoday.Interface
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.newstoday.Model.Article
 
@@ -15,11 +16,14 @@ interface ArticleDao {
     @Query("SELECT COUNT(*) FROM Article")
     fun getOfflineArticleCount():Int
 
-    @Query("SELECT * from Article ORDER BY article_published_at")
-    fun getArticleList():List<Article>
+    @Query("SELECT * from Article GROUP BY article_title")
+    fun getArticleList(): LiveData<List<Article>>
 
-    @Delete
-    fun deleteArticle(article: Article)
+    @Query("delete from Article where article_title=:article_title")
+    fun deleteArticle(article_title: String)
+
+    @Query("select count(*) from Article where article_title=:article_title")
+    fun compareBookmarks(article_title: String): Int
 
 //    @Query("SELECT * from Article WHERE id=:id")
 //    fun getArticle():Article

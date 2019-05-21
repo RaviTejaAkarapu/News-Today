@@ -59,6 +59,7 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnNewsListAdapterInteractio
                 }
                 setCurrentArticle(currentItem!!)
                 updateList(it)
+                setBookmark(currentItem!!)
             }
         })
 
@@ -67,24 +68,18 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnNewsListAdapterInteractio
         }
 
         binding?.bookmarkBorder?.setOnClickListener {
-            if (!currentItem?.isBookmarked!!) {
-                currentItem?.isBookmarked=true
-                it.visibility = View.GONE
-                binding?.bookmarkFill?.visibility = View.VISIBLE
-                articleViewModel.saveArticle(currentItem!!)
-                Toast.makeText(context,"Article saved to DOWNLOADS",Toast.LENGTH_SHORT).show()
-            }
+            setBookmark(currentItem!!)
         }
 
-        binding?.bookmarkFill?.setOnClickListener {
-            if (currentItem?.isBookmarked!!) {
-                currentItem?.isBookmarked=false
-                it.visibility = View.GONE
-                binding?.bookmarkBorder?.visibility = View.VISIBLE
-                articleViewModel.unSaveArticle(currentItem!!)
-                Toast.makeText(context,"Article removed from DOWNLOADS",Toast.LENGTH_SHORT).show()
-            }
-        }
+//        binding?.bookmarkFill?.setOnClickListener {
+//            if (currentItem?.isBookmarked!!) {
+//                currentItem?.isBookmarked=false
+//                it.visibility = View.GONE
+//                binding?.bookmarkBorder?.visibility = View.VISIBLE
+//                articleViewModel.unSaveArticle(currentItem!!)
+//                Toast.makeText(context,"Article removed from DOWNLOADS",Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
         binding?.fragmentSwipeToRefresh?.setOnRefreshListener {
             loadNews(category!!, true)
@@ -92,6 +87,20 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnNewsListAdapterInteractio
         binding?.listNews?.setHasFixedSize(true)
         binding?.listNews?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         return binding?.root
+    }
+
+    private fun setBookmark(currentItem: Article) {
+        if (articleViewModel.compareBookmarks(currentItem)) {
+            binding?.bookmarkBorder?.setImageResource(R.drawable.ic_bookmark_fill)
+            currentItem.isBookmarked = true
+            articleViewModel.saveArticle(currentItem)
+            Toast.makeText(context,"Article saved to DOWNLOADS",Toast.LENGTH_SHORT).show()
+        } else {
+            binding?.bookmarkBorder?.setImageResource(R.drawable.ic_bookmark_border)
+            currentItem.isBookmarked = false
+            articleViewModel.unSaveArticle(currentItem)
+            Toast.makeText(context,"Article removed from DOWNLOADS",Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun openNewsUrl(article: Article) {
@@ -107,13 +116,7 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnNewsListAdapterInteractio
         binding?.topTitle?.text = article.title
 //        binding?.topAuthor?.text = article.author
         currentItem = article
-        if (currentItem?.isBookmarked!!){
-            binding?.bookmarkFill?.visibility = View.VISIBLE
-            binding?.bookmarkBorder?.visibility = View.GONE
-        }else{
-            binding?.bookmarkFill?.visibility = View.GONE
-            binding?.bookmarkBorder?.visibility = View.VISIBLE
-        }
+        setBookmark(currentItem!!)
     }
 
     private fun loadNews(category: String, isRefreshed: Boolean) {
