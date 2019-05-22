@@ -5,9 +5,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".OfflineActivity">
+            tools:context=".OfflineActivity"
+    android:background="@android:color/black">
         <androidx.recyclerview.widget.RecyclerView
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
                 tools:listitem="@layout/news_layout"
                 tools:orientation="vertical"

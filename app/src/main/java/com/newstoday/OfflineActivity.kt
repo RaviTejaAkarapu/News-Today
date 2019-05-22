@@ -35,7 +35,7 @@ class OfflineActivity : AppCompatActivity(), OfflineNewsListAdapter.OnOfflineNew
 
         binding?.offlineListNews?.setHasFixedSize(true)
         binding?.offlineListNews?.layoutManager =
-            GridLayoutManager(this, 3, RecyclerView.VERTICAL, true) as RecyclerView.LayoutManager?
+            GridLayoutManager(this, 3) as RecyclerView.LayoutManager?
 
 //        offlineNewsListViewHolder.setOfflineArticle(articleViewModel.getSavedArticles())
     }

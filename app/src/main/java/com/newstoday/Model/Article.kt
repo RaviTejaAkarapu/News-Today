@@ -29,5 +29,5 @@ class Article(
     var publishedAt: String? = null,
 
     @ColumnInfo(name = "isBookmarked")
-    var isBookmarked: Boolean? = false
+    var isBookmarked: Boolean = false
 )

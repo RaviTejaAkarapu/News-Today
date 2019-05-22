@@ -27,13 +27,16 @@ class LoginActivity : AppCompatActivity() {
         val email = login_email?.text.toString()
         val password = login_password?.text.toString()
 
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "email and password cannot be empty", Toast.LENGTH_LONG).show()
+        if (email.isEmpty()) {
+//            Toast.makeText(this, "email and password cannot be empty", Toast.LENGTH_LONG).show()
+            email_layout.setError("Email cannot be empty")
+        } else if (password.isEmpty()) {
+            password_layout.setError("Password cannot be empty")
         } else {
             Log.d("LOGIN", "email =$login_email \t password=$login_password")
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener {
-                    if(!it.isSuccessful){
+                    if (!it.isSuccessful) {
                         return@addOnCompleteListener
                     }
                     Toast.makeText(this, "Logging in", Toast.LENGTH_LONG).show()
@@ -42,7 +45,8 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "User or Passowrd is wrong", Toast.LENGTH_LONG).show()
+                    //                    Toast.makeText(this, "User or Passowrd is wrong", Toast.LENGTH_LONG).show()
+                    email_layout.setError("Email/Password is wrong")
                 }
         }
     }

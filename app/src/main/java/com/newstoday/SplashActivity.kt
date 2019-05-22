@@ -1,28 +1,35 @@
 package com.newstoday
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
+import com.newstoday.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
-
-        val background=object:Thread(){
-            override fun run() {
-                try{
-                    Thread.sleep(4000)
-
-                    val intent=Intent(baseContext,ChannelActivity::class.java)
-                    startActivity(intent)
-                } catch (e: Exception){
-                    e.printStackTrace()
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_splash)
+        val animDrawable = AnimatedVectorDrawableCompat.create(this, R.drawable.logo_anim)
+        binding.logoSvg.setImageDrawable(animDrawable)
+        animDrawable!!.registerAnimationCallback(
+            object : Animatable2Compat.AnimationCallback() {
+                override fun onAnimationEnd(drawable: Drawable?) {
+                    startActivity(Intent(this@SplashActivity, ChannelActivity::class.java))
                 }
-            }
-        }
-        background.start()
+            })
+        animDrawable.start()
 
+        Handler().postDelayed({
+            runOnUiThread {
+                binding.appName.text = "News Today"
+            }
+        }, 2000)
     }
 }

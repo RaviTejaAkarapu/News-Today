@@ -3,6 +3,7 @@ package com.newstoday.fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.newstoday.Interface.NewsService
+import com.newstoday.LoginActivity
 import com.newstoday.Model.Article
 import com.newstoday.Model.News
 import com.newstoday.R
@@ -68,7 +71,18 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnNewsListAdapterInteractio
         }
 
         binding?.bookmarkBorder?.setOnClickListener {
-            setBookmark(currentItem!!)
+            Log.d("NewsListFragment","USERID=${FirebaseAuth.getInstance().uid}")
+            if (FirebaseAuth.getInstance().uid != null) {
+                if (currentItem!!.isBookmarked) {
+                    articleViewModel.unSaveArticle(currentItem!!)
+                } else {
+                    articleViewModel.saveArticle(currentItem!!)
+                }
+            }else
+            {
+                val intent = Intent(context,LoginActivity::class.java)
+                startActivity(intent)
+            }
         }
 
 //        binding?.bookmarkFill?.setOnClickListener {
@@ -90,17 +104,31 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnNewsListAdapterInteractio
     }
 
     private fun setBookmark(currentItem: Article) {
-        if (articleViewModel.compareBookmarks(currentItem)) {
-            binding?.bookmarkBorder?.setImageResource(R.drawable.ic_bookmark_fill)
-            currentItem.isBookmarked = true
-            articleViewModel.saveArticle(currentItem)
-            Toast.makeText(context,"Article saved to DOWNLOADS",Toast.LENGTH_SHORT).show()
-        } else {
-            binding?.bookmarkBorder?.setImageResource(R.drawable.ic_bookmark_border)
-            currentItem.isBookmarked = false
-            articleViewModel.unSaveArticle(currentItem)
-            Toast.makeText(context,"Article removed from DOWNLOADS",Toast.LENGTH_SHORT).show()
-        }
+
+        articleViewModel.compareBookmarks(currentItem).observe(this, Observer {
+
+            if (it) {
+                binding?.bookmarkBorder?.setImageResource(R.drawable.ic_bookmark_fill)
+                currentItem.isBookmarked = true
+//                Toast.makeText(context,"Article saved to DOWNLOADS",Toast.LENGTH_SHORT).show()
+            } else {
+                binding?.bookmarkBorder?.setImageResource(R.drawable.ic_bookmark_border)
+                currentItem.isBookmarked = false
+//                Toast.makeText(context,"Article removed from DOWNLOADS",Toast.LENGTH_SHORT).show()
+            }
+        })
+
+//        if (articleViewModel.compareBookmarks(currentItem)) {
+//            binding?.bookmarkBorder?.setImageResource(R.drawable.ic_bookmark_fill)
+//            currentItem.isBookmarked = true
+//            articleViewModel.saveArticle(currentItem)
+//            Toast.makeText(context,"Article saved to DOWNLOADS",Toast.LENGTH_SHORT).show()
+//        } else {
+//            binding?.bookmarkBorder?.setImageResource(R.drawable.ic_bookmark_border)
+//            currentItem.isBookmarked = false
+//            articleViewModel.unSaveArticle(currentItem)
+//            Toast.makeText(context,"Article removed from DOWNLOADS",Toast.LENGTH_SHORT).show()
+//        }
     }
 
     override fun openNewsUrl(article: Article) {

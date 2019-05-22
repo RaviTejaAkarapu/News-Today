@@ -1,18 +1,13 @@
 package com.newstoday
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_register.*
-import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -34,8 +29,11 @@ class RegisterActivity : AppCompatActivity() {
         val email = email.text.toString()
         val password = password.text.toString()
 
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "email and password cannot be empty", Toast.LENGTH_LONG).show()
+        if (email.isEmpty()) {
+//            Toast.makeText(this, "email and password cannot be empty", Toast.LENGTH_LONG).show()
+            email_layout.setError("Email cannot be empty")
+        } else if (password.isEmpty()) {
+            password_layout.setError("Password cannot be empty")
         } else {
             Log.d("RegisterActivity", "email = $email")
             Log.d("RegisterActivity", "password = $password")
@@ -54,6 +52,7 @@ class RegisterActivity : AppCompatActivity() {
                 .addOnFailureListener {
                     Log.d("RegisterActivity", "Failed to create user ${it.message}")
                     Toast.makeText(this, "Failed!!", Toast.LENGTH_LONG).show()
+
                 }
         }
     }

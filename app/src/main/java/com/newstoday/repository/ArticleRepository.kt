@@ -1,7 +1,6 @@
 package com.newstoday.repository
 
 import android.os.AsyncTask
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.newstoday.Interface.ArticleDao
 import com.newstoday.Model.Article
@@ -24,14 +23,18 @@ class ArticleRepository(
         return list
     }
 
-    fun compareBookmarks(article: Article): Boolean {
-//        return (articleDatabase.articleDao().compareBookmarks(article.title!!) != 0)
+    fun compareBookmarks(article: Article): LiveData<Boolean> {
+        return (articleDatabase.articleDao().compareBookmarks(article.title!!))
 
 //        Log.d(
 //            "ArticleRepository",
 //            "compare bookmarks return value ${articleDatabase.articleDao().compareBookmarks(article.title!!)}"
 //        )
-        return false
+//        return false
+    }
+
+    fun clearBookmarks() {
+        ClearBookmarksAsyncTask(articleDatabase.articleDao()).execute()
     }
 
     companion object {
@@ -46,6 +49,12 @@ class ArticleRepository(
             override fun doInBackground(vararg params: Article?) {
                 val article = params[0]
                 articleDao.deleteArticle(article?.title!!)
+            }
+        }
+
+        class ClearBookmarksAsyncTask(private val articleDao: ArticleDao) : AsyncTask<Any?, Any?, Any?>() {
+            override fun doInBackground(vararg params: Any?) {
+                articleDao.clearBookmarks()
             }
         }
 

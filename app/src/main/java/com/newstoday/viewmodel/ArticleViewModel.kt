@@ -18,8 +18,12 @@ class ArticleViewModel : ViewModel() {
         articleRepository.unSaveArticle(article)
     }
 
-    fun compareBookmarks(article: Article): Boolean{
+    fun compareBookmarks(article: Article): LiveData<Boolean> {
         return articleRepository.compareBookmarks(article)
+    }
+
+    fun clearBookmarks(){
+        articleRepository.clearBookmarks()
     }
 
     fun getSavedArticles(): LiveData<List<Article>> {
