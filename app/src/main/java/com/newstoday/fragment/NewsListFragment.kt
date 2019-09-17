@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,27 +19,34 @@ import com.newstoday.Model.Article
 import com.newstoday.Model.News
 import com.newstoday.R
 import com.newstoday.adapter.NewsListAdapter
-import com.newstoday.common.Common
 import com.newstoday.databinding.FragmentChannelBinding
+import com.newstoday.di.DaggerApiComponent
 import com.newstoday.viewmodel.ArticleViewModel
 import com.squareup.picasso.Picasso
 import dmax.dialog.SpotsDialog
 import retrofit2.Call
 import retrofit2.Response
+import javax.inject.Inject
 
 class NewsListFragment : Fragment(), NewsListAdapter.OnNewsListAdapterInteractionListener {
 
-    val TAG: String = "LIST NEWS TAGGG"
+    val TAG: String = "LIST NEWS TAG"
     var source = ""
     var webHotUrl: String? = ""
     lateinit var dialog: SpotsDialog
-    lateinit var mService: NewsService
     lateinit var newsListAdapter: NewsListAdapter
     lateinit var articleViewModel: ArticleViewModel
     private var articles: ArrayList<Article> = arrayListOf()
     private var category: String? = ""
     private var binding: FragmentChannelBinding? = null
     private var currentItem: Article? = null
+
+    @Inject
+    lateinit var mService: NewsService
+
+    init {
+        DaggerApiComponent.create().inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,16 +77,15 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnNewsListAdapterInteractio
         }
 
         binding?.bookmarkBorder?.setOnClickListener {
-            Log.d("NewsListFragment","USERID=${FirebaseAuth.getInstance().uid}")
+            Log.d("NewsListFragment", "USERID=${FirebaseAuth.getInstance().uid}")
             if (FirebaseAuth.getInstance().uid != null) {
                 if (currentItem!!.isBookmarked) {
                     articleViewModel.unSaveArticle(currentItem!!)
                 } else {
                     articleViewModel.saveArticle(currentItem!!)
                 }
-            }else
-            {
-                val intent = Intent(context,LoginActivity::class.java)
+            } else {
+                val intent = Intent(context, LoginActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -99,7 +104,8 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnNewsListAdapterInteractio
             loadNews(category!!, true)
         }
         binding?.listNews?.setHasFixedSize(true)
-        binding?.listNews?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding?.listNews?.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         return binding?.root
     }
 
@@ -149,7 +155,6 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnNewsListAdapterInteractio
 
     private fun loadNews(category: String, isRefreshed: Boolean) {
         if (!isRefreshed) {
-            mService = Common.newsService
             dialog = SpotsDialog(context)
             dialog.show()
             mService.getNewsFromCategory(category)
